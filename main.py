@@ -11,9 +11,8 @@ if __name__ == '__main__':
     with open("save.json", "r") as file:
         serialized_info = file.read()
         app.step_manager.steps = json.loads(serialized_info)["steps"]
-
-    main_activity = MainActivity()
-    main_activity.resize(800, 600)
-    main_activity.show()
+    app.main_activity = MainActivity()
+    app.main_activity.resize(800, 600)
+    app.main_activity.show()
 
     sys.exit(app.exec())

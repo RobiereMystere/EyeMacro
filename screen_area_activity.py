@@ -43,16 +43,13 @@ class ScreenAreaLabel(QtWidgets.QLabel):
         os.rename("temp.png", picture_filename)
         step = Step(len(self.app.step_manager.steps), picture_filename=picture_filename)
         self.app.step_manager.addStep(step)
-        print(self.app.step_manager.steps)
+        self.app.main_activity.initSteps()
         self.close()
 
     def mousePressEvent(self, event):
         self.begin = event.pos()
         self.end = event.pos()
         self.ok_button.setVisible(False)
-
-        print(event.pos().x(), event.pos().y())
-
         self.update()
 
     def mouseMoveEvent(self, event):

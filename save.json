@@ -1,32 +1,5 @@
 {
     "steps": {
-        "0": {
-            "id": 0,
-            "picture_filename": "0.png"
-        },
-        "1": {
-            "id": 1,
-            "picture_filename": "1.png"
-        },
-        "2": {
-            "id": 2,
-            "picture_filename": "2.png"
-        },
-        "3": {
-            "id": 3,
-            "picture_filename": "3.png"
-        },
-        "4": {
-            "id": 4,
-            "picture_filename": "4.png"
-        },
-        "5": {
-            "id": 5,
-            "picture_filename": "5.png"
-        },
-        "6": {
-            "id": 6,
-            "picture_filename": "6.png"
-        }
+
     }
 }
