@@ -1,7 +1,6 @@
 import sys
 import json
 from PySide6 import QtWidgets
-
 from main_activity import MainActivity
 from step import StepManager
 

@@ -1,6 +1,7 @@
 from PySide6 import QtWidgets, QtCore
 from PySide6.QtGui import QPixmap
 
+from commander import Commander
 from screen_area_activity import ScreenAreaLabel
 
 
@@ -8,29 +9,41 @@ class MainActivity(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.app = QtWidgets.QApplication.instance()
+        # Buttons
         self.step_button = QtWidgets.QPushButton("add step")
-        self.refresh_button = QtWidgets.QPushButton("Refresh")
         self.run_button = QtWidgets.QPushButton("Run")
+        # Buttons Actions
+        self.step_button.clicked.connect(self.openCapture)
+        self.run_button.clicked.connect(self.clearSteps)
+        # Layouts
         self.h_layout = QtWidgets.QHBoxLayout(self)
-        self.steps_layout = QtWidgets.QVBoxLayout(self)
-        self.initSteps()
-        self.setLayout(self.h_layout)
-        self.scroll =  QtWidgets.QScrollArea(self)
-        self.steps_layout.addWidget(self.scroll)
-        self.scroll.setWidgetResizable(True)
-        self.scrollContent =  QtWidgets.QWidget(self.scroll)
-        self.steps_layout =  QtWidgets.QVBoxLayout(self.scrollContent)
-        self.scrollContent.setLayout(self.steps_layout)
-        self.scroll.setWidget(self.scrollContent)
         self.v_layout = QtWidgets.QVBoxLayout(self)
-        self.v_layout.addWidget(self.refresh_button)
+        self.steps_layout = QtWidgets.QVBoxLayout(self)
+        # ScrollArea
+        self.scroll = QtWidgets.QScrollArea(self)
+        self.scrollContent = QtWidgets.QWidget(self.scroll)
+        self.initScrollArea()
+
+        # Layouts Settings
+        self.setLayout(self.h_layout)
+        self.v_layout.addWidget(self.run_button)
         self.v_layout.addWidget(self.step_button)
         self.h_layout.addLayout(self.steps_layout)
         self.h_layout.addLayout(self.v_layout)
         self.screen_area_label = ScreenAreaLabel()
         self.screen_area_label.setVisible(False)
-        self.step_button.clicked.connect(self.openCapture)
-        self.refresh_button.clicked.connect(self.clearSteps)
+        self.initSteps()
+
+    def resizeEvent(self, event):
+        self.scroll.resize(self.width(), int(self.height() / 3))
+
+    def initScrollArea(self):
+        self.steps_layout.addWidget(self.scroll)
+        self.scroll.setWidgetResizable(True)
+        self.steps_layout = QtWidgets.QVBoxLayout(self.scrollContent)
+        self.scroll.setWidget(self.scrollContent)
+        self.scrollContent.setLayout(self.steps_layout)
+        self.scroll.resize(self.width(), int(self.height() / 3))
 
     def openCapture(self):
         self.screen_area_label = ScreenAreaLabel()
@@ -58,6 +71,9 @@ class MainActivity(QtWidgets.QWidget):
         for child in children:
             child.deleteLater()
 
+    def onRun(self):
+        commander = Commander()
+
 
 class StepWidget(QtWidgets.QWidget):
     def __init__(self, step):
@@ -67,5 +83,5 @@ class StepWidget(QtWidgets.QWidget):
         self.textLabel.setText(str(step["id"]))
         self.pictureLabel.setPixmap(QPixmap(step["picture_filename"]))
         self.h_layout = QtWidgets.QHBoxLayout(self)
-        self.h_layout.addWidget(self.textLabel)
         self.h_layout.addWidget(self.pictureLabel)
+        self.h_layout.addWidget(self.textLabel)
